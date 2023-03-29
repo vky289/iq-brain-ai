@@ -1,0 +1,36 @@
+version: '3.6'
+services:
+  iq-brain-redis:
+    image: redis:latest
+    restart: always
+    container_name: iq-brain-redis
+    ports:
+      - 6579:6379
+    depends_on:
+      - iq-brain-db
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  iq-brain-db:
+    image: postgres:12.3
+    restart: always
+    container_name: iq-brain-db
+    environment:
+      TZ: 'GMT-5'
+      PGTZ: 'GMT-5'
+      POSTGRES_PASSWORD: iq-brain
+      POSTGRES_USER: iq-brain
+      POSTGRES_DB: iq-brain
+    ports:
+      - 5532:5432
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "iq-brain", "-U", "iq-brain" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+volumes:
+  postgresData:
