@@ -21,6 +21,8 @@ PRODUCTION = True
 
 env = environ.Env()
 env_file = os.path.join(BASE_DIR, 'config', '.env')
+if env_file is None:
+    env_file = os.path.join(BASE_DIR, 'config', 'template.env')
 environ.Env.read_env(env_file=env_file)
 
 
