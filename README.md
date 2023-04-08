@@ -20,7 +20,7 @@ Custom library used for own purpose.
     ```
 3. Install dependencies
     ```bash
-    pip3 install -r requirement.txt
+    pip3 install -r requirements.txt
     ```
 4. Bring up postgres docker db 
     ```bash
