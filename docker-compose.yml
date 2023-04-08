@@ -1,18 +1,5 @@
 version: '3.6'
 services:
-  iq-brain-redis:
-    image: redis:latest
-    restart: always
-    container_name: iq-brain-redis
-    ports:
-      - 6579:6379
-    depends_on:
-      - iq-brain-db
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
   iq-brain-db:
     image: postgres:12.3
     restart: always

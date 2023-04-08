@@ -45,6 +45,12 @@ INSTALLED_APPS = [
     'easyaudit',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
+
+    # Inner-App
+    'app',
+    'app.core.apps.CoreConfig',
+    'app.authentication.apps.AuthConfig'
 
 ]
 
@@ -58,7 +64,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
 ROOT_URLCONF = 'iq_brain_ai.urls'
+LOGIN_REDIRECT_URL = "/"   # Route defined in app/urls.py
+LOGOUT_REDIRECT_URL = "/"  # Route defined in app/urls.py
 
 TEMPLATE_DIR = os.path.join(CORE_DIR, "core/templates")
 
@@ -108,6 +126,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+    },
+    "is_authenticated": True,  # Set to True to enforce user authentication,
+    "is_superuser": True,  # Set to True to enforce admin only access
+}
+
 
 LOG_LEVEL = env.str('LOG_LEVEL', default='INFO')
 LOG_FILE = env.str('LOG_FILE', default='./logs.log')
