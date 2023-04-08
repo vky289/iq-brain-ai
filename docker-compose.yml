@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: iq-brain
       POSTGRES_DB: iq-brain
     ports:
-      - 5532:5432
+      - "5532:5432"
     volumes:
       - postgresData:/var/lib/postgresql/data
     healthcheck:
