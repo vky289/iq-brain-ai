@@ -10,7 +10,6 @@
 **/*.pyc
 
 # Environments
-.env
 .venv
 env/
 venv/
