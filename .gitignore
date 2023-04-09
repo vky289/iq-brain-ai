@@ -1,3 +1,6 @@
+# DB
+db.sqlite3
+
 # Production static files folder
 /static_assets/
 
