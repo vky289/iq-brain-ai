@@ -17,23 +17,24 @@ COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt \
-    && useradd -U app_user \
-    && install -d -m 0755 -o app_user -g app_user /app/static
+    && useradd -U peter \
+    && install -d -m 0755 -o peter -g peter /app/core/static \
+    && install -d -m 0755 -o peter -g peter /app/core/templates \
+    && install -d -m 0755 -o peter -g peter /app/staticfiles
 
 # Section 5- Code and User Setup
 WORKDIR /app
 
-USER app_user:app_user
+USER peter:peter
 
-COPY --chown=app_user:app_user . .
+COPY --chown=peter:peter . .
 
 RUN chmod +x docker/*.sh
 
-# Section 6- Docker Run Checks and Configurations
-ENTRYPOINT [ "docker/entrypoint.sh" ]
-
+# Section 6- Expose port
 EXPOSE 8000
 
+# Section 7- Docker Run Checks, healthcheck and Configurations
 HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
 
-CMD [ "docker/start.sh", "server" ]
+ENTRYPOINT [ "docker/entrypoint.sh" ]

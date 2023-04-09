@@ -6,7 +6,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer for Django Group Model
     """
-    url = serializers.HyperlinkedIdentityField(view_name="api:group-detail")
+    url = serializers.HyperlinkedIdentityField(view_name="authAPI:group-detail")
 
     class Meta:
         model = Group
@@ -17,7 +17,7 @@ class PermissionSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer for Django Permission Model
     """
-    url = serializers.HyperlinkedIdentityField(view_name="api:permission-detail")
+    url = serializers.HyperlinkedIdentityField(view_name="authAPI:permission-detail")
 
     class Meta:
         model = Permission
@@ -28,11 +28,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer for Django User Model
     """
-    url = serializers.HyperlinkedIdentityField(view_name="api:user-detail")
+    url = serializers.HyperlinkedIdentityField(view_name="authAPI:user-detail")
     groups = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='auth:group-detail',
+        view_name='authAPI:group-detail',
     )
 
     class Meta:
