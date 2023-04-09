@@ -1,27 +1,39 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3
+# Section 1- Base Image
+FROM python:3.8-slim
 
-# Step 1: Install dependencies
-# ----------------------------------------
+# Section 2- Python Interpreter Flags
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN         apt-get update && apt-get install -y net-tools netcat
+# Section 3- Compiler and OS libraries
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends build-essential libpq-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-# Step 2: Install requirements.txt using pip
-# ----------------------------------------
+# Section 4- Project libraries and User Creation
+COPY requirements.txt /tmp/requirements.txt
 
-ENV         PYTHONUNBUFFERED=1
-WORKDIR     /code
-COPY        requirements.txt /code/
-RUN         pip install -r requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt \
+    && useradd -U app_user \
+    && install -d -m 0755 -o app_user -g app_user /app/static
 
-# Step 3: Copy Django Code
-# ----------------------------------------
+# Section 5- Code and User Setup
+WORKDIR /app
 
-COPY        . /code/
+USER app_user:app_user
+
+COPY --chown=app_user:app_user . .
+
+RUN chmod +x docker/*.sh
+
+# Section 6- Docker Run Checks and Configurations
+ENTRYPOINT [ "docker/entrypoint.sh" ]
 
 EXPOSE 8000
 
 HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
 
-CMD ["/code/runserver.sh"]
+CMD [ "docker/start.sh", "server" ]
