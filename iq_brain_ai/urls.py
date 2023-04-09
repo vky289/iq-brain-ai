@@ -32,17 +32,17 @@ urlpatterns = [
     #path('polls/', include('app.core.urls'))
 ]
 
-# for REST API auto binding
-# router = routers.DefaultRouter()
-#
-# router.register(r'users', UserViewSet)
-# router.register(r'groups', GroupViewSet)
-# router.register(r'permissions', PermissionViewSet)
-#
-# urlpatterns += [
-#     path(r'auth/', include((router.urls, 'iq-brainer'), namespace='api')),
-#     path(r'auth/token', obtain_auth_token, name='api_token_auth'),
-# ]
+#for REST API auto binding
+router = routers.DefaultRouter()
+
+router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'permissions', PermissionViewSet)
+
+urlpatterns += [
+    path(r'auth/', include((router.urls, 'iq-brainer'), namespace='api')),
+    path(r'auth/token', obtain_auth_token, name='api_token_auth'),
+]
 
 router = routers.DefaultRouter()
 

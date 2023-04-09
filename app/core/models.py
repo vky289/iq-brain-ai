@@ -18,7 +18,7 @@ class Questions(models.Model):
     created_date = models.DateTimeField(default=now, editable=False)
 
     def answers(self):
-        return [answer.options for answer in self.questions.all()]
+        return [answer.option for answer in self.questions.all()]
 
     def __str__(self):
         return self.question

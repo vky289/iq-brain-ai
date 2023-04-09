@@ -3,7 +3,7 @@ import uuid
 from rest_framework import viewsets
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 from django.http import JsonResponse
 
 from app.core.serializers import QuestionsSerializer, StatsSerializer
@@ -31,9 +31,9 @@ class QuestionsList(viewsets.ModelViewSet):
         w_answer = self.request.data.get("wrong_answer", None)
         if question and index and answer and w_answer:
             instance = serializer.save(question=question, iq_index=index)
-            Answers.objects.create(options=answer, questions=instance, correct=True)
+            Answers.objects.create(option=answer, questions=instance, correct=True)
             for each in w_answer:
-                Answers.objects.create(options=each, questions=instance, correct=False)
+                Answers.objects.create(option=each, questions=instance, correct=False)
 
 
 class ComposeQuestion(RetrieveUpdateAPIView):
